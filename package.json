@@ -1,0 +1,23 @@
+{
+  "name": "vanatok",
+  "version": "0.1.0",
+  "description": "Desktop app combining virtual camera effects and TikTok publishing workflow",
+  "main": "src/main.js",
+  "private": true,
+  "scripts": {
+    "start": "electron .",
+    "dev": "electron ."
+  },
+  "keywords": [
+    "desktop",
+    "camera",
+    "virtual-camera",
+    "tiktok",
+    "electron"
+  ],
+  "author": "nanangpuniet-cyber",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^30.0.0"
+  }
+}
