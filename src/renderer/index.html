@@ -33,23 +33,24 @@
             <h2>Live Preview</h2>
           </div>
           <div class="actions">
-            <button class="secondary">Save Preset</button>
-            <button class="primary">Start Virtual Cam</button>
+            <button class="secondary" id="savePresetBtn">Save Preset</button>
+            <button class="primary" id="startCameraBtn">Start Camera</button>
           </div>
         </header>
 
         <section class="studio-grid">
           <div class="preview-panel">
             <div class="preview-frame">
-              <div class="preview-placeholder">
+              <video id="previewVideo" autoplay playsinline muted></video>
+              <div class="preview-overlay">
                 <span>Camera preview</span>
               </div>
             </div>
             <div class="control-row">
-              <button class="ghost">Front</button>
-              <button class="ghost">Back</button>
-              <button class="ghost">Screen</button>
-              <button class="primary">Record</button>
+              <button class="ghost" data-facing="user">Front</button>
+              <button class="ghost" data-facing="environment">Back</button>
+              <button class="ghost" id="screenSourceBtn">Screen</button>
+              <button class="primary" id="recordBtn">Record</button>
             </div>
           </div>
 
