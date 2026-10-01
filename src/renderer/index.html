@@ -9,94 +9,48 @@
   <body>
     <div class="app-shell">
       <aside class="sidebar">
-        <div class="brand">
-          <div class="brand-mark">V</div>
-          <div>
-            <h1>VanaTok</h1>
-            <small>Creator Studio</small>
-          </div>
-        </div>
-
+        <div class="brand"><div class="brand-mark">V</div><div><h1>VanaTok</h1><small>Creator Studio</small></div></div>
         <nav class="nav">
           <button class="nav-item active">Live Camera</button>
           <button class="nav-item">Effects</button>
           <button class="nav-item">Overlays</button>
           <button class="nav-item">Presets</button>
-          <button class="nav-item">Publish</button>
+          <button class="nav-item" id="publishNavBtn">Publish</button>
         </nav>
       </aside>
 
       <main class="workspace">
         <header class="topbar">
-          <div>
-            <p class="eyebrow">Desktop Creator Suite</p>
-            <h2>Live Preview</h2>
-          </div>
-          <div class="actions">
-            <button class="secondary" id="savePresetBtn">Save Preset</button>
-            <button class="primary" id="startCameraBtn">Start Camera</button>
-          </div>
+          <div><p class="eyebrow">Desktop Creator Suite</p><h2>Live Preview</h2></div>
+          <div class="actions"><button class="secondary" id="savePresetBtn">Save Preset</button><button class="primary" id="startCameraBtn">Start Camera</button></div>
         </header>
 
         <section class="studio-grid">
           <div class="preview-panel">
             <div class="preview-frame" id="previewFrame">
               <video id="previewVideo" autoplay playsinline muted></video>
-              <div class="preview-overlay">
-                <span>Camera preview</span>
-              </div>
-              <div class="live-badge">LIVE</div>
+              <div class="preview-overlay"><span>Camera preview</span></div><div class="live-badge">LIVE</div>
             </div>
-            <div class="control-row">
-              <button class="ghost" data-facing="user">Front</button>
-              <button class="ghost" data-facing="environment">Back</button>
-              <button class="ghost" id="screenSourceBtn">Screen</button>
-              <button class="primary" id="recordBtn">Record</button>
-            </div>
+            <div class="control-row"><button class="ghost" data-facing="user">Front</button><button class="ghost" data-facing="environment">Back</button><button class="ghost" id="screenSourceBtn">Screen</button><button class="primary" id="recordBtn">Record</button></div>
           </div>
 
           <aside class="panel tools-panel">
-            <div class="panel-section">
-              <h3>Effects</h3>
-              <div class="controls-stack">
-                <label>
-                  <span>Brightness</span>
-                  <input type="range" id="brightness" min="0" max="200" value="100" />
-                </label>
-                <label>
-                  <span>Contrast</span>
-                  <input type="range" id="contrast" min="0" max="200" value="100" />
-                </label>
-                <label>
-                  <span>Saturation</span>
-                  <input type="range" id="saturation" min="0" max="200" value="100" />
-                </label>
-              </div>
-            </div>
-
-            <div class="panel-section">
-              <h3>Overlays</h3>
-              <div class="item-list">
-                <div>Brand logo</div>
-                <div>Lower third</div>
-                <div>Countdown</div>
-                <div>Donation ticker</div>
-              </div>
-            </div>
-
-            <div class="panel-section">
-              <h3>Publish</h3>
-              <div class="item-list">
-                <div>TikTok draft</div>
-                <div>Live stream</div>
-                <div>Export MP4</div>
-              </div>
+            <div class="panel-section"><h3>Effects</h3><div class="controls-stack">
+              <label><span>Brightness</span><input type="range" id="brightness" min="0" max="200" value="100" /></label>
+              <label><span>Contrast</span><input type="range" id="contrast" min="0" max="200" value="100" /></label>
+              <label><span>Saturation</span><input type="range" id="saturation" min="0" max="200" value="100" /></label>
+            </div></div>
+            <div class="panel-section"><h3>Overlays</h3><div class="item-list"><div>Brand logo</div><div>Lower third</div><div>Countdown</div><div>Donation ticker</div></div></div>
+            <div class="panel-section publish-section" id="publishPanel"><h3>Publish to TikTok</h3>
+              <label class="field-label" for="captionInput">Caption</label><textarea id="captionInput" rows="3" placeholder="Tulis caption konten..."></textarea>
+              <label class="check-row"><input type="checkbox" id="allowComments" checked /> Allow comments</label>
+              <button class="primary full-width" id="createDraftBtn">Create TikTok Draft</button>
+              <p class="helper-text" id="publishStatus">Video akan diekspor lokal sebelum dipublikasikan.</p>
             </div>
           </aside>
         </section>
       </main>
     </div>
-
     <script src="./app.js"></script>
   </body>
 </html>
