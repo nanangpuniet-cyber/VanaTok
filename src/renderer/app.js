@@ -6,16 +6,35 @@ window.addEventListener('DOMContentLoaded', async () => {
   }
 
   const previewVideo = document.getElementById('previewVideo');
+  const previewFrame = document.getElementById('previewFrame');
   const startCameraBtn = document.getElementById('startCameraBtn');
   const recordBtn = document.getElementById('recordBtn');
   const screenSourceBtn = document.getElementById('screenSourceBtn');
+  const savePresetBtn = document.getElementById('savePresetBtn');
   const facingButtons = Array.from(document.querySelectorAll('[data-facing]'));
 
+  const brightnessInput = document.getElementById('brightness');
+  const contrastInput = document.getElementById('contrast');
+  const saturationInput = document.getElementById('saturation');
+
   let stream = null;
+  let screenStream = null;
   let mediaRecorder = null;
   let chunks = [];
   let isRecording = false;
   let facingMode = 'user';
+
+  function applyFilterStyles() {
+    const brightness = brightnessInput.value;
+    const contrast = contrastInput.value;
+    const saturation = saturationInput.value;
+
+    previewVideo.style.filter = `brightness(${brightness}%) contrast(${contrast}%) saturate(${saturation}%)`;
+  }
+
+  brightnessInput.addEventListener('input', applyFilterStyles);
+  contrastInput.addEventListener('input', applyFilterStyles);
+  saturationInput.addEventListener('input', applyFilterStyles);
 
   async function startCamera() {
     try {
@@ -30,6 +49,7 @@ window.addEventListener('DOMContentLoaded', async () => {
 
       previewVideo.srcObject = stream;
       previewVideo.play();
+      previewFrame.classList.add('active');
       startCameraBtn.textContent = 'Camera Active';
       startCameraBtn.classList.add('active');
     } catch (error) {
@@ -44,14 +64,15 @@ window.addEventListener('DOMContentLoaded', async () => {
       stream.getTracks().forEach((track) => track.stop());
       stream = null;
     }
-    previewVideo.srcObject = null;
+    previewVideo.srcObject = screenStream || null;
+    previewFrame.classList.remove('active');
     startCameraBtn.textContent = 'Start Camera';
     startCameraBtn.classList.remove('active');
   }
 
   async function toggleScreenSource() {
     try {
-      const screenStream = await navigator.mediaDevices.getDisplayMedia({
+      screenStream = await navigator.mediaDevices.getDisplayMedia({
         video: true,
         audio: false
       });
@@ -71,14 +92,40 @@ window.addEventListener('DOMContentLoaded', async () => {
     }
   }
 
+  function savePreset() {
+    const preset = {
+      brightness: brightnessInput.value,
+      contrast: contrastInput.value,
+      saturation: saturationInput.value,
+      facingMode,
+      savedAt: new Date().toISOString()
+    };
+
+    const key = 'vanatok-preset';
+    localStorage.setItem(key, JSON.stringify(preset));
+    alert('Preset berhasil disimpan.');
+  }
+
+  function loadPreset() {
+    const preset = JSON.parse(localStorage.getItem('vanatok-preset') || '{}');
+    if (!preset.brightness) return;
+
+    brightnessInput.value = preset.brightness;
+    contrastInput.value = preset.contrast;
+    saturationInput.value = preset.saturation;
+    facingMode = preset.facingMode || 'user';
+    applyFilterStyles();
+  }
+
   function startRecording() {
-    if (!previewVideo.srcObject) {
+    const activeStream = previewVideo.srcObject;
+    if (!activeStream) {
       alert('Mulai kamera terlebih dahulu sebelum merekam.');
       return;
     }
 
     chunks = [];
-    mediaRecorder = new MediaRecorder(previewVideo.srcObject);
+    mediaRecorder = new MediaRecorder(activeStream);
 
     mediaRecorder.ondataavailable = (event) => {
       if (event.data && event.data.size > 0) {
@@ -120,6 +167,7 @@ window.addEventListener('DOMContentLoaded', async () => {
   });
 
   screenSourceBtn.addEventListener('click', toggleScreenSource);
+  savePresetBtn.addEventListener('click', savePreset);
 
   facingButtons.forEach((button) => {
     button.addEventListener('click', async () => {
@@ -142,9 +190,6 @@ window.addEventListener('DOMContentLoaded', async () => {
     }
   });
 
-  document.addEventListener('visibilitychange', () => {
-    if (document.hidden && stream) {
-      stopCamera();
-    }
-  });
+  loadPreset();
+  applyFilterStyles();
 });
