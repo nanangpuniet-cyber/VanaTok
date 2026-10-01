@@ -40,11 +40,12 @@
 
         <section class="studio-grid">
           <div class="preview-panel">
-            <div class="preview-frame">
+            <div class="preview-frame" id="previewFrame">
               <video id="previewVideo" autoplay playsinline muted></video>
               <div class="preview-overlay">
                 <span>Camera preview</span>
               </div>
+              <div class="live-badge">LIVE</div>
             </div>
             <div class="control-row">
               <button class="ghost" data-facing="user">Front</button>
@@ -57,11 +58,19 @@
           <aside class="panel tools-panel">
             <div class="panel-section">
               <h3>Effects</h3>
-              <div class="chip-list">
-                <span>Beauty</span>
-                <span>Blur</span>
-                <span>Glow</span>
-                <span>Vignette</span>
+              <div class="controls-stack">
+                <label>
+                  <span>Brightness</span>
+                  <input type="range" id="brightness" min="0" max="200" value="100" />
+                </label>
+                <label>
+                  <span>Contrast</span>
+                  <input type="range" id="contrast" min="0" max="200" value="100" />
+                </label>
+                <label>
+                  <span>Saturation</span>
+                  <input type="range" id="saturation" min="0" max="200" value="100" />
+                </label>
               </div>
             </div>
 
