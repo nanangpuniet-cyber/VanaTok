@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain } = require('electron');
+const { app, BrowserWindow, session, ipcMain } = require('electron');
 const path = require('path');
 
 function createWindow() {
@@ -7,35 +7,31 @@ function createWindow() {
     height: 900,
     minWidth: 1100,
     minHeight: 760,
-    frame: true,
     backgroundColor: '#0b1020',
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
       contextIsolation: true,
-      nodeIntegration: false
+      nodeIntegration: false,
+      sandbox: true
     }
   });
 
   mainWindow.loadFile(path.join(__dirname, 'renderer/index.html'));
-  mainWindow.webContents.openDevTools({ mode: 'detach' });
 }
 
 app.whenReady().then(() => {
-  createWindow();
+  session.defaultSession.setPermissionRequestHandler((webContents, permission, callback) => {
+    callback(permission === 'media' || permission === 'display-capture');
+  });
 
+  createWindow();
   app.on('activate', () => {
-    if (BrowserWindow.getAllWindows().length === 0) {
-      createWindow();
-    }
+    if (BrowserWindow.getAllWindows().length === 0) createWindow();
   });
 });
 
 app.on('window-all-closed', () => {
-  if (process.platform !== 'darwin') {
-    app.quit();
-  }
+  if (process.platform !== 'darwin') app.quit();
 });
 
-ipcMain.handle('app:get-version', () => {
-  return app.getVersion();
-});
+ipcMain.handle('app:get-version', () => app.getVersion());

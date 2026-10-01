@@ -1,23 +1,29 @@
 {
   "name": "vanatok",
-  "version": "0.1.0",
-  "description": "Desktop app combining virtual camera effects and TikTok publishing workflow",
+  "version": "0.2.0",
+  "description": "Desktop creator studio for camera effects, recording, local TikTok drafts, and virtual-camera integration planning",
   "main": "src/main.js",
   "private": true,
   "scripts": {
     "start": "electron .",
-    "dev": "electron ."
+    "dev": "electron .",
+    "dist": "electron-builder"
   },
-  "keywords": [
-    "desktop",
-    "camera",
-    "virtual-camera",
-    "tiktok",
-    "electron"
-  ],
+  "keywords": ["desktop", "camera", "virtual-camera", "tiktok", "electron"],
   "author": "nanangpuniet-cyber",
   "license": "MIT",
   "devDependencies": {
-    "electron": "^30.0.0"
+    "electron": "^30.0.0",
+    "electron-builder": "^24.13.3"
+  },
+  "build": {
+    "appId": "com.nanangpuniet.vanatok",
+    "productName": "VanaTok",
+    "asar": true,
+    "files": ["src/**/*", "package.json", "README.md"],
+    "win": {
+      "target": "nsis",
+      "artifactName": "VanaTok-Setup-${version}.${ext}"
+    }
   }
 }

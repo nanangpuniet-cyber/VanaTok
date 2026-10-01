@@ -1,37 +1,46 @@
 # VanaTok
 
-Desktop app concept combining:
-- virtual camera / live effects like VanaCam
-- TikTok publishing workflows and creator tools
-- live preview, overlays, presets, and export pipeline
+VanaTok is a Windows-first Electron creator studio prototype combining camera effects, screen capture, recording, local presets, and a TikTok draft workflow.
 
-## MVP Scope
-- Camera source selection (front/back/virtual)
-- Real-time effects and filters
-- Text, stickers, overlays
-- Recording and export
-- Preset management
-- TikTok posting flow integration
-- Desktop-first experience for Windows
+## Current release: 0.2.0
 
-## Recommended Stack
-- Electron + JavaScript
-- Media capture APIs
-- FFmpeg or browser media pipeline
-- OBS Virtual Camera integration for desktop testing
-- Optional native bridge for Windows-specific camera layers
+### Included
+- Webcam and microphone preview
+- Front/back camera switching
+- Screen capture source
+- Brightness, contrast, and saturation preview controls
+- WebM recording with audio
+- Local preset save/load
+- Caption and comment settings
+- Local TikTok draft metadata
+- Windows NSIS packaging configuration
+- Secure Electron preload, context isolation, sandbox, and permission handling
 
-## Project Layout
-- `src/main.js` — Electron app bootstrap
-- `src/preload.js` — secure bridge for frontend access
-- `src/renderer/` — UI screens and styling
-- `docs/architecture.md` — product and system architecture
+## Run locally
 
-## Getting Started
-```
+```bash
 npm install
 npm start
 ```
 
-## Notes
-This is a starter scaffold for a desktop creator tool. The virtual-camera and TikTok live integration layers will be implemented in the next iteration after the core UI and capture flow are stabilized.
+Build a Windows installer:
+
+```bash
+npm run dist
+```
+
+The installer is generated in `dist/`.
+
+## Important platform limitation
+
+This release does **not** create an Android-style or native Windows virtual-camera driver. The app records and previews media locally. A real camera device that appears in TikTok Live Studio requires a separately signed native Windows camera implementation (for example, a Media Foundation/DirectShow or OBS-based bridge). That component cannot be safely replaced by Electron renderer code alone.
+
+Direct TikTok upload is also not enabled. The draft panel stores local metadata; production posting requires TikTok OAuth and approved Content Posting API access.
+
+## Roadmap for production
+
+1. Add a signed Windows virtual-camera bridge and frame transport.
+2. Render filters/overlays into a canvas/encoder pipeline rather than preview-only CSS.
+3. Add FFmpeg MP4 export and thumbnail generation.
+4. Add TikTok OAuth/API integration after developer approval.
+5. Add installer signing, device testing, crash reporting, and automated tests.
